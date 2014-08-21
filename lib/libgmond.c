@@ -8,6 +8,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include <error.h>
+
 #include "ganglia_priv.h"
 #include "ganglia.h"
 #include "default_conf.h"
@@ -25,6 +27,8 @@
 #include <fcntl.h>
 #include <dirent.h>
 #include <fnmatch.h>
+
+extern int errno;
 
 static char myhost[APRMAXHOSTLEN+1];
 
@@ -371,9 +375,12 @@ Ganglia_udp_send_channels_create( Ganglia_pool p, Ganglia_gmond_config config )
           socket = create_udp_client( pool, host, port, mcast_if, bind_address, bind_hostname );
           if(!socket)
             {
-              err_msg("Unable to create UDP client for %s:%d. Exiting.\n",
-                      host? host: "NULL", port);
-              exit(1);
+              err_msg("Unable to create UDP client for %s:%d. Exiting. ERROR_NO:%d\n",
+                      host? host: "NULL", port, errno);
+
+              return NULL;
+
+//              exit(1);
             }
         }
 
