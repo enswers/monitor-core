@@ -187,7 +187,7 @@ size_t
 hashval ( datum_t *key, hash_t *hash )
 {
    int i;
-   int hash_val;
+   size_t hash_val;
  
    /* We should handle these errors better later */
    if ( hash == NULL || key == NULL || key->data == NULL || key->size <= 0 )
